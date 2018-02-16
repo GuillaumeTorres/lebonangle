@@ -1,9 +1,33 @@
-# Le bon angle
+AirBnB Like api
+=====================
 
-## Install ##
+#### Install
+```
+$ cp .env.dist .env
+$ npm install
+$ apt install mongodb
+```
+
+#### Run
 
 ```
-composer install
-php app/console doctrine:database:create
-php app/console doctrine:schema:update --force
- ```
+$ npm start
+```
+
+#### MongoDB
+```
+$ mongo
+$ show dbs
+$ use airbnbapi
+$ show collections
+$ db.users.find()
+```
+
+#### ApiDoc
+```
+$ npm run apidoc
+```
+Custom
+```
+$ node_modules/apidoc/bin/apidoc -i routes/ -o doc/
+```
