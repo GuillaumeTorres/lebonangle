@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -36,11 +37,22 @@ class User extends BaseUser
      */
     private $lastName;
 
+    /**
+     * @var Furniture
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Furniture", inversedBy="user")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="set null")
+     */
+    private $furnitures;
+
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         parent::__construct();
+        $this->furnitures = new ArrayCollection();
     }
-
 
     /**
      * Get id
@@ -98,6 +110,22 @@ class User extends BaseUser
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * @return Furniture
+     */
+    public function getFurnitures()
+    {
+        return $this->furnitures;
+    }
+
+    /**
+     * @param Furniture $furnitures
+     */
+    public function setFurnitures($furnitures)
+    {
+        $this->furnitures = $furnitures;
     }
 }
 
