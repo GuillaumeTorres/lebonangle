@@ -52,8 +52,8 @@ fos_rest:
         view_response_listener: 'force'
         formats:
             json: true
-    service:
-        serializer: jms_serializer.serializer
+#    service:
+#        serializer: fos_rest.serializer.symfony
 
 # Twig Configuration
 twig:

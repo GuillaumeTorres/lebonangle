@@ -28,12 +28,12 @@ services:
         resource: '../../src/AppBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
-    api.normalizer.competition:
-        tags:
-            - { name: serializer.normalizer }
-    api.encoder.json:
-        tags:
-            - { name: serializer.encoder }
+#    api.normalizer.competition:
+#        tags:
+#            - { name: serializer.normalizer }
+#    api.encoder.json:
+#        tags:
+#            - { name: serializer.encoder }
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
