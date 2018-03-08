@@ -40,8 +40,7 @@ class User extends BaseUser
     /**
      * @var Furniture
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Furniture", inversedBy="user")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="set null")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Furniture", mappedBy="user")
      */
     private $furnitures;
 
@@ -121,11 +120,27 @@ class User extends BaseUser
     }
 
     /**
-     * @param Furniture $furnitures
+     * Add Furniture
+     *
+     * @param Furniture $furniture
+     *
+     * @return User
      */
-    public function setFurnitures($furnitures)
+    public function addFurniture(Furniture $furniture)
     {
-        $this->furnitures = $furnitures;
+        $this->furnitures[] = $furniture;
+
+        return $this;
+    }
+
+    /**
+     * Remove Furniture
+     *
+     * @param Furniture $furniture
+     */
+    public function removeFurniture(Furniture $furniture)
+    {
+        $this->furnitures->removeElement($furniture);
     }
 }
 

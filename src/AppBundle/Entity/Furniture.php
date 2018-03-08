@@ -66,7 +66,8 @@ class Furniture
     /**
      * @var User
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\User", mappedBy="furnitures")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="furnitures")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="set null")
      */
     private $user;
 
