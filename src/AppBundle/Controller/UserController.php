@@ -52,7 +52,11 @@ class UserController extends Controller
         }
         $jsonUser = $user->jsonSerialize();
 
-        return new JsonResponse($jsonUser, 200);
+        $token = $this->get('lexik_jwt_authentication.encoder')->encode([
+            'username' => $user->getUsername(),
+        ]);
+
+        return new JsonResponse($jsonUser, 200, ['Authorization' => 'Bearer '.$token]);
     }
 
     /**
@@ -86,6 +90,10 @@ class UserController extends Controller
         $userManager->updateUser($user);
         $jsonUser = $user->jsonSerialize();
 
-        return new JsonResponse($jsonUser, 200);
+        $token = $this->get('lexik_jwt_authentication.encoder')->encode([
+            'username' => $user->getUsername(),
+        ]);
+
+        return new JsonResponse($jsonUser, 200, ['Authorization' => 'Bearer '.$token]);
     }
 }
