@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * User entity class file
+ *
+ * PHP Version 7.1
+ *
+ * @category Entity
+ * @package  AppBundle\Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
-class User extends BaseUser
+class User extends BaseUser implements \JsonSerializable
 {
     /**
      * @var int
@@ -38,6 +45,13 @@ class User extends BaseUser
     private $lastName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="type", columnDefinition="ENUM('BUYER','SELLER')", type="string", length=255)
+     */
+    private $type;
+
+    /**
      * @var Furniture
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Furniture", mappedBy="user")
@@ -51,6 +65,22 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->furnitures = new ArrayCollection();
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id'         => $this->getId(),
+            'username'   => $this->getUsername(),
+            'first_name' => $this->getFirstName(),
+            'last_name'  => $this->getLastName(),
+            'type'       => $this->getType(),
+            'email'      => $this->getEmail(),
+            'roles'      => $this->getRoles(),
+        ];
     }
 
     /**
@@ -109,6 +139,22 @@ class User extends BaseUser
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
     /**
