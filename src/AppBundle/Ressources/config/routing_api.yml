@@ -1,0 +1,9 @@
+api_user: 
+  type: rest
+  resource:     "AppBundle:User"
+  name_prefix:  api_
+  
+#api_furniture:
+#  type: rest
+#  resource:     "AppBundle:Furniture"
+#  name_prefix:  api_

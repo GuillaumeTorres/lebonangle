@@ -4,3 +4,8 @@ app:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+rest :
+    type : rest
+    resource : "@AppBundle/Ressources/config/routing_api.yml"
+    prefix : /api
