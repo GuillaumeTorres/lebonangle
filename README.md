@@ -4,6 +4,18 @@
 
 ```
 composer install
-php app/console doctrine:database:create
-php app/console doctrine:schema:update --force
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:update --force
  ```
+
+## Start ##
+
+```
+php bin/console server:run
+```
+
+## Usefull Commands ##
+
+```
+php bin/console doctrine:database:drop --force
+```
