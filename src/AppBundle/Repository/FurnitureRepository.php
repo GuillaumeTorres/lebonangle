@@ -13,22 +13,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class FurnitureRepository extends EntityRepository
 {
-    public function _findAll()
-    {
-        $queryBuilder = $this->_em->createQueryBuilder()
-            ->select('a')
-            ->from($this->_entityName, 'a')
-        ;
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    public function _findOne($id)
-    {
-        $queryBuilder = $this->_em->createQueryBuilder()
-            ->select('a')
-            ->from($this->_entityName, 'a')
-            ->where('a.id = '.$id)
-        ;
-        return $queryBuilder->getQuery()->getResult();
-    }
 }
