@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * Furniture entity class file
+ *
+ * PHP Version 7.1
+ *
+ * @category Entity
+ * @package  AppBundle\Entity
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

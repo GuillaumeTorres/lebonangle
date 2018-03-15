@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * LoadUserData class file
+ *
+ * PHP Version 7.1
+ *
+ * @category Fixture
+ * @package  AppBundle\DataFixtures
+ */
 namespace AppBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -10,6 +17,10 @@ use FOS\UserBundle\Doctrine\UserManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class LoadUserData
+ * @package AppBundle\DataFixtures
+ */
 class LoadUserData extends Fixture implements ContainerAwareInterface, OrderedFixtureInterface
 {
     /**

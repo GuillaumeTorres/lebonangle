@@ -59,12 +59,20 @@ class User extends BaseUser implements \JsonSerializable
     private $furnitures;
 
     /**
+     * @var Request
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Request", mappedBy="user")
+     */
+    private $requests;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         parent::__construct();
         $this->furnitures = new ArrayCollection();
+        $this->requests   = new ArrayCollection();
     }
 
     /**
@@ -187,6 +195,33 @@ class User extends BaseUser implements \JsonSerializable
     public function removeFurniture(Furniture $furniture)
     {
         $this->furnitures->removeElement($furniture);
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequests()
+    {
+        return $this->requests;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function addRequests(Request $request)
+    {
+        $request->setUser($this);
+        $this->requests[] = $request;
+    }
+
+    /**
+     * Remove Request
+     *
+     * @param Request $requests
+     */
+    public function removeRequest(Request $requests)
+    {
+        $this->requests->removeElement($requests);
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * LoadFurnitureData class file
+ * LoadRequestData class file
  *
  * PHP Version 7.1
  *
@@ -9,17 +9,17 @@
  */
 namespace AppBundle\DataFixtures;
 
-use AppBundle\Entity\Furniture;
+use AppBundle\Entity\Request;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 
 /**
- * Class LoadFurnitureData
+ * Class LoadRequestData
  * @package AppBundle\DataFixtures
  */
-class LoadFurnitureData extends Fixture implements OrderedFixtureInterface
+class LoadRequestData extends Fixture implements OrderedFixtureInterface
 {
     /**
      * @param ObjectManager $manager
@@ -34,14 +34,13 @@ class LoadFurnitureData extends Fixture implements OrderedFixtureInterface
             $user = $this->getReference('user0');
             $title = $nameList[array_rand($nameList)];
 
-            $furniture = new Furniture();
-            $furniture->setTitle($title);
-            $furniture->setWidth(rand(10, 100));
-            $furniture->setHeight(rand(10, 100));
-            $furniture->setDepth(rand(10, 100));
-            $furniture->setUser($user);
+            $request = new Request();
+            $request->setTitle($title);
+            $request->setText('Lorem ipsum dolor amet consectetur adipiscing');
+            $request->setAngle(rand(30, 170));
+            $request->setUser($user);
 
-            $manager->persist($furniture);
+            $manager->persist($request);
             $manager->flush();
         }
     }
