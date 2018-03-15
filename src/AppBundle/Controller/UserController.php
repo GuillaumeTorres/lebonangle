@@ -5,11 +5,13 @@
  * PHP Version 7.1
  *
  * @category Controller
+ *
  * @package  AppBundle\Controller
  */
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +19,21 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 /**
  * Class UserController
- * @package AppBundle\Controller
  */
 class UserController extends Controller
 {
+    private $userService;
+
+    /**
+     * UserController constructor.
+     *
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * @return \AppBundle\Entity\User[]|array
      */
@@ -45,10 +58,12 @@ class UserController extends Controller
         $password = $request->get('password');
 
         /** @var User $user */
-        $user = $this->get('fos_user.user_manager')->findUserBy(array('username' => $username));
-        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
-        if (!$user || !$encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
-            return new JsonResponse('Invalid username/password', 401);
+        try {
+            $user = $this->userService->authUser($username, $password);
+        } catch (\InvalidArgumentException $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 500);
         }
         $jsonUser = $user->jsonSerialize();
 
@@ -68,26 +83,13 @@ class UserController extends Controller
      */
     public function registerAction(Request $request)
     {
-        $username  = $request->get('username');
-        $firstName = $request->get('first_name');
-        $lastName  = $request->get('last_name');
-        $email     = $request->get('email');
-        $type      = $request->get('type');
-        $password  = $request->get('password');
+        $userParameters = $request->request->all();
 
-        $userManager = $this->get('fos_user.user_manager');
-
-        /** @var User $user */
-        $user = $userManager->createUser();
-        $user->setUsername($username);
-        $user->setFirstName($firstName);
-        $user->setLastName($lastName);
-        $user->setEmail($email);
-        $user->setType(strtoupper($type));
-        $user->setPlainPassword($password);
-        $user->setEnabled(true);
-
-        $userManager->updateUser($user);
+        try {
+            $user = $this->userService->createUser($userParameters);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
         $jsonUser = $user->jsonSerialize();
 
         $token = $this->get('lexik_jwt_authentication.encoder')->encode([

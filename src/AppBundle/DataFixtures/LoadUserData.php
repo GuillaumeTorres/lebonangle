@@ -5,6 +5,7 @@
  * PHP Version 7.1
  *
  * @category Fixture
+ *
  * @package  AppBundle\DataFixtures
  */
 namespace AppBundle\DataFixtures;
@@ -19,7 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class LoadUserData
- * @package AppBundle\DataFixtures
  */
 class LoadUserData extends Fixture implements ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -28,10 +28,14 @@ class LoadUserData extends Fixture implements ContainerAwareInterface, OrderedFi
      */
     protected $userManager;
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $lorem = 'Lorem ipsum dolor amet consectetur adipiscing elit sed eiusmod tempor incididunt labore dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat';
         $nameList = explode(' ', $lorem);
+        $type = ['BUYER', 'SELLER'];
 
         for ($i = 0; $i < 3; $i ++) {
             $username = $nameList[array_rand($nameList)];
@@ -41,6 +45,7 @@ class LoadUserData extends Fixture implements ContainerAwareInterface, OrderedFi
             $user->setLastName('Doe');
             $user->setUsername($username);
             $user->setEmail($username.'@gmail.com');
+            $user->setType(array_rand($type));
             $user->setPlainPassword('admin');
             $user->setEnabled(true);
             $user->setRoles(array('ROLE_ADMIN'));
