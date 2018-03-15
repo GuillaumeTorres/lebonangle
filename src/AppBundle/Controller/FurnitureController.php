@@ -14,6 +14,9 @@ use AppBundle\Entity\Furniture;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class FurnitureController
@@ -28,9 +31,9 @@ class FurnitureController extends Controller
     {
         return $this
             ->getDoctrine()
-            ->getEntityManager()
+            ->getManager()
             ->getRepository('AppBundle:Furniture')
-            ->_findAll();
+            ->findAll();
     }
 
     /**
@@ -44,9 +47,9 @@ class FurnitureController extends Controller
     {
         return $this
             ->getDoctrine()
-            ->getEntityManager()
+            ->getManager()
             ->getRepository('AppBundle:Furniture')
-            ->_findOne($id);
+            ->findOneBy(array('id' => $id));
     }
 
     /**
@@ -54,7 +57,7 @@ class FurnitureController extends Controller
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Furniture
      */
     public function createFurnitureAction(Request $request)
     {
@@ -75,12 +78,12 @@ class FurnitureController extends Controller
         $furniture->setDepth($depth);
         $furniture->setAngle($angle);
 
-        $jsonFurniture = $furniture->jsonSerialize();
+        /*$jsonFurniture = $furniture->jsonSerialize();
 
         $token = $this->get('lexik_jwt_authentication.encoder')->encode([
             'title' => $furniture->getTitle(),
-        ]);
+        ]);*/
 
-        return new JsonResponse($jsonFurniture, 200, ['Authorization' => 'Bearer '.$token]);
+        return /*new JsonResponse(*/$furniture/*, 200, ['Authorization' => 'Bearer '.$token])*/;
     }
 }
