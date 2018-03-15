@@ -241,5 +241,21 @@ class Furniture
     {
         $this->user = $user;
     }
+
+    /**
+     * @return array
+     * */
+    public function jsonSerialize()
+    {
+        return [
+            'id'          => $this->getId(),
+            'title'       => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'width'       => $this->getWidth(),
+            'height'      => $this->getHeight(),
+            'depth'       => $this->getDepth(),
+            'angle'       => $this->getAngle(),
+        ];
+    }
 }
 
