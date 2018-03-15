@@ -34,8 +34,8 @@ services:
 #    api.encoder.json:
 #        tags:
 #            - { name: serializer.encoder }
-
-    # add more services, or override services that need manual wiring
-    # AppBundle\Service\ExampleService:
-    #     arguments:
-    #         $someArgument: 'some_value'
+#    app.jwt.authentication:
+#        class:  AppBundle\Service\JsonWebTokenService
+#        arguments:
+#            jwtEncoder: "@lexik_jwt_authentication.encoder"
+#            entityManager: "@doctrine.orm.entity_manager"
