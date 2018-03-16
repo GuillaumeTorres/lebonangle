@@ -25,6 +25,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class FurnitureController extends Controller
 {
     /**
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the list of all the furnitures.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=Furniture::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Furnitures")
+     *
      * @return \AppBundle\Entity\Furniture[]|array
      */
     public function getFurnituresAction()
@@ -37,6 +49,17 @@ class FurnitureController extends Controller
     }
 
     /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the furniture with the specified id.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=Furniture::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Furnitures")
+     *
      * @Rest\Get("/furniture/{id}", name="furniture")
      *
      * @param integer $id
@@ -53,6 +76,18 @@ class FurnitureController extends Controller
     }
 
     /**
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Creates a new furniture.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=Furniture::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Furnitures")
+     *
      * @Rest\Post("/create_furniture", name="createFurniture")
      *
      * @param Request $request
@@ -78,12 +113,6 @@ class FurnitureController extends Controller
         $furniture->setDepth($depth);
         $furniture->setAngle($angle);
 
-        /*$jsonFurniture = $furniture->jsonSerialize();
-
-        $token = $this->get('lexik_jwt_authentication.encoder')->encode([
-            'title' => $furniture->getTitle(),
-        ]);*/
-
-        return /*new JsonResponse(*/$furniture/*, 200, ['Authorization' => 'Bearer '.$token])*/;
+        return $furniture;
     }
 }

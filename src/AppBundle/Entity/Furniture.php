@@ -10,6 +10,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Swagger\Annotations as SWG;
+
 
 /**
  * Furniture
@@ -25,6 +27,9 @@ class Furniture
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @SWG\Property(type="integer", description="The unique identifier of the furniture.")
+     *
      */
     private $id;
 
@@ -32,6 +37,9 @@ class Furniture
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     *
+     * @SWG\Property(type="string", description="The title of the furniture.")
+     *
      */
     private $title;
 
@@ -39,6 +47,9 @@ class Furniture
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     *
+     * @SWG\Property(type="string", description="The description of the furniture.")
+     *
      */
     private $description;
 
@@ -46,6 +57,8 @@ class Furniture
      * @var float
      *
      * @ORM\Column(name="width", type="float")
+     *
+     * @SWG\Property(type="float", description="The width of the furniture.")
      */
     private $width;
 
@@ -53,6 +66,8 @@ class Furniture
      * @var float
      *
      * @ORM\Column(name="height", type="float")
+     *
+     * @SWG\Property(type="float", description="The height of the furniture.")
      */
     private $height;
 
@@ -60,6 +75,8 @@ class Furniture
      * @var float
      *
      * @ORM\Column(name="depth", type="float")
+     *
+     * @SWG\Property(type="float", description="The depth of the furniture.")
      */
     private $depth;
 
@@ -67,6 +84,8 @@ class Furniture
      * @var int
      *
      * @ORM\Column(name="angle", type="integer", nullable=true)
+     *
+     * @SWG\Property(type="integer", description="The angle of the furniture.")
      */
     private $angle;
 
@@ -75,6 +94,8 @@ class Furniture
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="furnitures")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="set null")
+     *
+     * @SWG\Property(type="User", description="The user linked to the furniture.")
      */
     private $user;
 
