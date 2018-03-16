@@ -9,6 +9,7 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\Service\FurnitureService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Furniture;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,61 +19,61 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+
+use AppBundle\Service\RequestService;
+use AppBundle\Service\UserService;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
+use AppBundle\Entity\Request as RequestEntity;
 /**
  * Class FurnitureController
- * @package AppBundle\Controller
+ *
+ *
+ * @RouteResource("Furniture")
  */
 class FurnitureController extends Controller
 {
+
+    private $furnitureService;
+
     /**
+     * FurnitureController constructor.
      *
-     * @SWG\Response(
-     *     response=200,
-     *     description="Returns the list of all the furnitures.",
-     *     @SWG\Schema(
-     *          type="array",
-     *          @Model(type=Furniture::class)
-     *      )
-     * )
-     *
-     * @SWG\Tag(name="Furnitures")
-     *
-     * @return \AppBundle\Entity\Furniture[]|array
+     * @param FurnitureService $furnitureService
      */
-    public function getFurnituresAction()
+    public function __construct(FurnitureService $furnitureService)
     {
-        return $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Furniture')
-            ->findAll();
+        $this->furnitureService = $furnitureService;
     }
 
     /**
-     * @SWG\Response(
-     *     response=200,
-     *     description="Returns the furniture with the specified id.",
-     *     @SWG\Schema(
-     *          type="array",
-     *          @Model(type=Furniture::class)
-     *      )
-     * )
-     *
-     * @SWG\Tag(name="Furnitures")
-     *
-     * @Rest\Get("/furniture/{id}", name="furniture")
-     *
-     * @param integer $id
-     *
-     * @return JsonResponse
+     * @return RequestEntity[]|array|JsonResponse
      */
-    public function getFurnitureAction($id)
+    public function cgetAction()
     {
-        return $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Furniture')
-            ->findOneBy(array('id' => $id));
+        //$userId = $this->getUser()->getId();
+        try {
+            $furniture = $this->furnitureService->getFurnitures();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $furniture;
+    }
+
+    /**
+     * @return RequestEntity[]|array|JsonResponse
+     */
+    public function getAction($id)
+    {
+        //$userId = $this->getUser()->getId();
+        try {
+            $furniture = $this->furnitureService->getById($id);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $furniture;
     }
 
     /**
