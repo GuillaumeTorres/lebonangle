@@ -9,43 +9,58 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\Service\FurnitureService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AppBundle\Entity\Furniture;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Entity\Furniture as FurnitureEntity;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 /**
  * Class FurnitureController
- * @package AppBundle\Controller
+ *
+ * @RouteResource("Furniture")
  */
 class FurnitureController extends Controller
 {
+    private $furnitureService;
+
     /**
+     * FurnitureController constructor.
      *
+     * @param FurnitureService $furnitureService
+     */
+    public function __construct(FurnitureService $furnitureService)
+    {
+        $this->furnitureService = $furnitureService;
+    }
+
+    /**
      * @SWG\Response(
      *     response=200,
      *     description="Returns the list of all the furnitures.",
      *     @SWG\Schema(
      *          type="array",
-     *          @Model(type=Furniture::class)
+     *          @Model(type=FurnitureEntity::class)
      *      )
      * )
      *
      * @SWG\Tag(name="Furnitures")
      *
-     * @return \AppBundle\Entity\Furniture[]|array
+     * @return FurnitureEntity[]|array|JsonResponse
      */
-    public function getFurnituresAction()
+    public function cgetAction()
     {
-        return $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Furniture')
-            ->findAll();
+        try {
+            $furniture = $this->furnitureService->getFurnitures();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $furniture;
     }
 
     /**
@@ -54,7 +69,7 @@ class FurnitureController extends Controller
      *     description="Returns the furniture with the specified id.",
      *     @SWG\Schema(
      *          type="array",
-     *          @Model(type=Furniture::class)
+     *          @Model(type=FurnitureEntity::class)
      *      )
      * )
      *
@@ -62,27 +77,26 @@ class FurnitureController extends Controller
      *
      * @Rest\Get("/furniture/{id}", name="furniture")
      *
-     * @param integer $id
-     *
-     * @return JsonResponse
+     * @return FurnitureEntity[]|array|JsonResponse
      */
-    public function getFurnitureAction($id)
+    public function getAction($id)
     {
-        return $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Furniture')
-            ->findOneBy(array('id' => $id));
+        try {
+            $furniture = $this->furnitureService->getById($id);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $furniture;
     }
 
     /**
-     *
      * @SWG\Response(
      *     response=200,
      *     description="Creates a new furniture.",
      *     @SWG\Schema(
      *          type="array",
-     *          @Model(type=Furniture::class)
+     *          @Model(type=FurnitureEntity::class)
      *      )
      * )
      *
@@ -92,27 +106,46 @@ class FurnitureController extends Controller
      *
      * @param Request $request
      *
-     * @return Furniture
+     * @return FurnitureEntity|JsonResponse
      */
-    public function createFurnitureAction(Request $request)
+    public function postCreateAction(Request $request)
     {
-        $title       = $request->get('title');
-        $description = $request->get('description');
-        $width       = $request->get('width');
-        $height      = $request->get('height');
-        $depth       = $request->get('depth');
-        $angle       = $request->get('angle');
-
-        /** @var Furniture $furniture */
-        $furniture = new Furniture();
-
-        $furniture->setTitle($title);
-        $furniture->setDescription($description);
-        $furniture->setWidth($width);
-        $furniture->setHeight($height);
-        $furniture->setDepth($depth);
-        $furniture->setAngle($angle);
-
-        return $furniture;
+        $requestParameters = $request->request->all();
+        try {
+            $furnitureEntity = $this->furnitureService->createFurniture($this->getUser(), $requestParameters);
+        } catch (\Exception $e){
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+        return $furnitureEntity;
     }
+
+    /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Deletes a furniture.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=FurnitureEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Furnitures")
+     *
+     * @Rest\Delete("/delete_furniture/{id}", name="deleteFurniture")
+     *
+     * @param integer $id
+     *
+     * @return JsonResponse
+     */
+    public function deleteAction($id)
+    {
+        try {
+            $this->furnitureService->deleteFurniture($id);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return new JsonResponse(['Success' => 'Resource deleted successfully'], 200);
+    }
+
 }
