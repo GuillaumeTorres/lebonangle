@@ -285,6 +285,7 @@ class Furniture
             'height'      => $this->getHeight(),
             'depth'       => $this->getDepth(),
             'angle'       => $this->getAngle(),
+            'user'        => $this->getUser(),
         ];
     }
 }
