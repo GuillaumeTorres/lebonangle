@@ -10,8 +10,8 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\Form\RequestType;
 use AppBundle\Service\RequestService;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 /**
  * Class RequestController
  *
- * @RouteResource("Request")
+ * @Rest\Route("/request", name="request_")
  */
 class RequestController extends Controller
 {
@@ -38,9 +38,11 @@ class RequestController extends Controller
     }
 
     /**
+     * @Rest\Post(name="all")
+     *
      * @return RequestEntity[]|array|JsonResponse
      */
-    public function cgetAction()
+    public function getAllAction()
     {
         $userId = $this->getUser()->getId();
         try {
@@ -53,6 +55,8 @@ class RequestController extends Controller
     }
 
     /**
+     * @Rest\Post("/create", name="create")
+     *
      * @param Request $request
      *
      * @return RequestEntity|JsonResponse
@@ -60,8 +64,14 @@ class RequestController extends Controller
     public function createAction(Request $request)
     {
         $requestParameters = $request->request->all();
+
         try {
-            $requestEntity = $this->requestService->createRequest($this->getUser(), $requestParameters);
+            $requestEntity = new RequestEntity();
+            $requestEntity->setUser($this->getUser());
+
+            if ($this->submit($requestEntity, $requestParameters)) {
+                $this->requestService->insertRequest($requestEntity);
+            }
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 401);
         }
@@ -70,6 +80,31 @@ class RequestController extends Controller
     }
 
     /**
+     * @Rest\Put("/edit/{id}", name="edit")
+     *
+     * @param Request       $request
+     * @param RequestEntity $requestEntity
+     *
+     * @return RequestEntity|JsonResponse
+     */
+    public function putAction(Request $request, RequestEntity $requestEntity)
+    {
+        $requestParameters = $request->request->all();
+
+        try {
+            if ($this->submit($requestEntity, $requestParameters)) {
+                $this->requestService->insertRequest($requestEntity);
+            }
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $requestEntity;
+    }
+
+    /**
+     * @Rest\Delete("/delete/{id}", name="delete")
+     *
      * @param integer $id
      *
      * @return JsonResponse
@@ -83,5 +118,23 @@ class RequestController extends Controller
         }
 
         return new JsonResponse(['Success' => 'Resource deleted successfully'], 200);
+    }
+
+    /**
+     * @param RequestEntity $requestEntity
+     * @param array         $parameters
+     *
+     * @return boolean
+     */
+    private function submit($requestEntity, $parameters)
+    {
+        $form = $this->createForm(RequestType::class, $requestEntity);
+        $form->submit($parameters);
+
+        if ($form->isSubmitted()) {
+            return true;
+        }
+
+        return false;
     }
 }

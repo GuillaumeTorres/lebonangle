@@ -65,6 +65,15 @@ class RequestService
     }
 
     /**
+     * @param Request $request
+     */
+    public function insertRequest($request)
+    {
+        $this->entityManager->persist($request);
+        $this->entityManager->flush();
+    }
+
+    /**
      * @param integer $id
      */
     public function deleteRequest($id)

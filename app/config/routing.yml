@@ -1,17 +1,10 @@
-app:
+api:
     resource: '@AppBundle/Controller/'
     type: annotation
+    prefix: /api
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
-
-#fos_furniture:
-#    resource: "@FOSFurnitureBundle/Resources/config/routing/all.xml"
-
-rest :
-    type : rest
-    resource : "@AppBundle/Ressources/config/routing_api.yml"
-    prefix : /api
 
 api_login_check:
     path: /api/login_check
@@ -21,11 +14,11 @@ app.swagger_ui:
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
 
-app.swagger:
-    path: /api/doc.json
-    methods: GET
-    defaults: { _controller: nelmio_api_doc.controller.swagger }
+#app.swagger:
+#    path: /api/doc.json
+#    methods: GET
+#    defaults: { _controller: nelmio_api_doc.controller.swagger }
 
-NelmioApiDocBundle:
-    resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
-    prefix:   /api/doc
+#NelmioApiDocBundle:
+#    resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
+#    prefix:   /api/doc
