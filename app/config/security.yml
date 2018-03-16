@@ -35,6 +35,10 @@ security:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
 
+        api_doc:
+            pattern: ^/api/doc
+            security: false
+
         main:
             pattern: ^/
             form_login:
