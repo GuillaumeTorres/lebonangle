@@ -12,12 +12,16 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * User
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ *
+ * @ExclusionPolicy("all")
  */
 class User extends BaseUser implements \JsonSerializable
 {
@@ -34,6 +38,8 @@ class User extends BaseUser implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)
+     *
+     * @Expose
      */
     private $firstName;
 
@@ -41,6 +47,8 @@ class User extends BaseUser implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=255)
+     *
+     * @Expose
      */
     private $lastName;
 
@@ -48,6 +56,8 @@ class User extends BaseUser implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="type", columnDefinition="ENUM('BUYER','SELLER')", type="string", length=255)
+     *
+     * @Expose
      */
     private $type;
 

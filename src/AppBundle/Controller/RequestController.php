@@ -11,9 +11,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\RequestService;
-use AppBundle\Service\UserService;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +20,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 /**
  * Class RequestController
- *
  *
  * @RouteResource("Request")
  */
