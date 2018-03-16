@@ -1,15 +1,24 @@
 <?php
-
+/**
+ * RequestType file
+ *
+ * PHP Version 7.1
+ *
+ * @category Form
+ *
+ * @package  AppBundle\Form
+ */
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Request;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class RequestType
+ */
 class RequestType extends AbstractType
 {
     /**
@@ -21,10 +30,6 @@ class RequestType extends AbstractType
             ->add('title', TextType::class)
             ->add('text', TextType::class)
             ->add('angle', IntegerType::class)
-//            ->add('user', EntityType::class, [
-//                'class'        => Request::class,
-//                'choice_label' => 'id',
-//            ])
         ;
     }
 

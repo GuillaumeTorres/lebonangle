@@ -11,7 +11,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Request;
-use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -42,26 +41,6 @@ class RequestService
             ->entityManager
             ->getRepository('AppBundle:Request')
             ->findBy(['user' => $userId]);
-    }
-
-    /**
-     * @param User  $user
-     * @param array $parameters
-     *
-     * @return Request
-     */
-    public function createRequest($user, $parameters)
-    {
-        $request = new Request();
-        $request->setTitle($parameters['title']);
-        $request->setText($parameters['text']);
-        $request->setAngle($parameters['angle']);
-        $request->setUser($user);
-
-        $this->entityManager->persist($request);
-        $this->entityManager->flush();
-
-        return $request;
     }
 
     /**
