@@ -5,13 +5,14 @@
  * PHP Version 7.1
  *
  * @category Entity
+ *
  * @package  AppBundle\Entity
  */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 use Swagger\Annotations as SWG;
-
 
 /**
  * Furniture
@@ -96,6 +97,8 @@ class Furniture
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="set null")
      *
      * @SWG\Property(type="User", description="The user linked to the furniture.")
+     *
+     * @Exclude
      */
     private $user;
 
