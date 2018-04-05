@@ -51,7 +51,7 @@ class RequestController extends Controller
      *
      * @SWG\Tag(name="Requests")
      *
-     * @Rest\Post(name="all")
+     * @Rest\Get(name="all")
      *
      * @return RequestEntity[]|array|JsonResponse
      */

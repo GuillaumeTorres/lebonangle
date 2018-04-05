@@ -258,9 +258,9 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPhoneNumber(): int
+    public function getPhoneNumber()
     {
         return $this->phoneNumber;
     }
