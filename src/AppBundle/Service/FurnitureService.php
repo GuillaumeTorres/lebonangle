@@ -63,26 +63,12 @@ class FurnitureService
     }
 
     /**
-     * @param User  $user
-     * @param array $parameters
-     *
-     * @return Furniture
+     * @param Request $request
      */
-    public function createFurniture($user, $parameters)
+    public function insertRequest($request)
     {
-        $furniture = new Furniture();
-        $furniture->setTitle($parameters['title']);
-        $furniture->setDescription($parameters['description']);
-        $furniture->setWidth($parameters['width']);
-        $furniture->setHeight($parameters['height']);
-        $furniture->setDepth($parameters['depth']);
-        $furniture->setAngle($parameters['angle']);
-        $furniture->setUser($user);
-
-        $this->entityManager->persist($furniture);
+        $this->entityManager->persist($request);
         $this->entityManager->flush();
-
-        return $furniture;
     }
 
     /**

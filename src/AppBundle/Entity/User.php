@@ -14,6 +14,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use Swagger\Annotations as SWG;
 
 /**
  * User
@@ -29,8 +30,12 @@ class User extends BaseUser implements \JsonSerializable
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
+     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @SWG\Property(type="integer", description="The unique identifier of the user.")
+     *
      */
     protected $id;
 
@@ -38,6 +43,8 @@ class User extends BaseUser implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)
+     *
+     * @SWG\Property(type="string", description="The First Name of the user.")
      *
      * @Expose
      */
@@ -48,6 +55,8 @@ class User extends BaseUser implements \JsonSerializable
      *
      * @ORM\Column(name="last_name", type="string", length=255)
      *
+     * @SWG\Property(type="string", description="The Last Name of the user.")
+     *
      * @Expose
      */
     private $lastName;
@@ -57,6 +66,8 @@ class User extends BaseUser implements \JsonSerializable
      *
      * @ORM\Column(name="type", columnDefinition="ENUM('BUYER','SELLER')", type="string", length=255)
      *
+     * @SWG\Property(type="string", description="The Type of the user.")
+     *
      * @Expose
      */
     private $type;
@@ -65,6 +76,8 @@ class User extends BaseUser implements \JsonSerializable
      * @var Furniture
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Furniture", mappedBy="user")
+     *
+     * @SWG\Property(type="array", description="The Furnitures of the user.")
      */
     private $furnitures;
 
@@ -72,6 +85,8 @@ class User extends BaseUser implements \JsonSerializable
      * @var Request
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Request", mappedBy="user")
+     *
+     * @SWG\Property(type="array", description="The Requests of the user.")
      */
     private $requests;
 

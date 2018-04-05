@@ -9,6 +9,7 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\Form\RequestType;
 use AppBundle\Service\FurnitureService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +23,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 /**
  * Class FurnitureController
  *
- * @RouteResource("Furniture")
+ * @Rest\Route("/furniture", name="furniture_")
  */
 class FurnitureController extends Controller
 {
@@ -50,9 +51,11 @@ class FurnitureController extends Controller
      *
      * @SWG\Tag(name="Furnitures")
      *
+     * @Rest\Post(name="all")
+     *
      * @return FurnitureEntity[]|array|JsonResponse
      */
-    public function cgetAction()
+    public function getAllAction()
     {
         try {
             $furniture = $this->furnitureService->getFurnitures();
@@ -61,6 +64,76 @@ class FurnitureController extends Controller
         }
 
         return $furniture;
+    }
+
+    /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Creates a new furniture.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=FurnitureEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Furnitures")
+     *
+     * @Rest\Post("/create", name="create")
+     *
+     * @param Request $request
+     *
+     * @return FurnitureEntity|JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $requestParameters = $request->request->all();
+
+        try {
+            $furnitureEntity = new FurnitureEntity();
+            $furnitureEntity->setUser($this->getUser());
+
+            if($this->submit($furnitureEntity, $requestParameters)) {
+                $this->furnitureService->insertRequest($furnitureEntity);
+            }
+        } catch (\Exception $e){
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $furnitureEntity;
+    }
+
+    /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Modifies the furniture with the specified id.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=FurnitureEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Furnitures")
+     *
+     * @Rest\Put("/edit/{id}", name="edit")
+     *
+     * @param Request         $request
+     * @param FurnitureEntity $furnitureEntity
+     *
+     * @return FurnitureEntity|JsonResponse
+     */
+    public function putAction(Request $request, FurnitureEntity $furnitureEntity)
+    {
+        $requestParameters = $request->request->all();
+
+        try {
+            if ($this->submit($furnitureEntity, $requestParameters)) {
+                $this->furnitureService->insertRequest($furnitureEntity);
+            }
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $furnitureEntity;
     }
 
     /**
@@ -93,35 +166,6 @@ class FurnitureController extends Controller
     /**
      * @SWG\Response(
      *     response=200,
-     *     description="Creates a new furniture.",
-     *     @SWG\Schema(
-     *          type="array",
-     *          @Model(type=FurnitureEntity::class)
-     *      )
-     * )
-     *
-     * @SWG\Tag(name="Furnitures")
-     *
-     * @Rest\Post("/create_furniture", name="createFurniture")
-     *
-     * @param Request $request
-     *
-     * @return FurnitureEntity|JsonResponse
-     */
-    public function postCreateAction(Request $request)
-    {
-        $requestParameters = $request->request->all();
-        try {
-            $furnitureEntity = $this->furnitureService->createFurniture($this->getUser(), $requestParameters);
-        } catch (\Exception $e){
-            return new JsonResponse(['error' => $e->getMessage()], 401);
-        }
-        return $furnitureEntity;
-    }
-
-    /**
-     * @SWG\Response(
-     *     response=200,
      *     description="Deletes a furniture.",
      *     @SWG\Schema(
      *          type="array",
@@ -131,7 +175,7 @@ class FurnitureController extends Controller
      *
      * @SWG\Tag(name="Furnitures")
      *
-     * @Rest\Delete("/delete_furniture/{id}", name="deleteFurniture")
+     * @Rest\Delete("/delete/{id}", name="delete")
      *
      * @param integer $id
      *
@@ -146,6 +190,24 @@ class FurnitureController extends Controller
         }
 
         return new JsonResponse(['Success' => 'Resource deleted successfully'], 200);
+    }
+
+    /**
+     * @param FurnitureEntity $furnitureEntity
+     * @param array         $parameters
+     *
+     * @return boolean
+     */
+    private function submit($furnitureEntity, $parameters)
+    {
+        $form = $this->createForm(RequestType::class, $furnitureEntity);
+        $form->submit($parameters);
+
+        if ($form->isSubmitted()) {
+            return true;
+        }
+
+        return false;
     }
 
 }

@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Request as RequestEntity;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 
 /**
  * Class RequestController
@@ -38,6 +40,17 @@ class RequestController extends Controller
     }
 
     /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the list of all the requests.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=RequestEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Requests")
+     *
      * @Rest\Post(name="all")
      *
      * @return RequestEntity[]|array|JsonResponse
@@ -55,6 +68,17 @@ class RequestController extends Controller
     }
 
     /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Creates a new request.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=RequestEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Requests")
+     *
      * @Rest\Post("/create", name="create")
      *
      * @param Request $request
@@ -80,6 +104,17 @@ class RequestController extends Controller
     }
 
     /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Modifies the furniture with the specified id.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=RequestEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Requests")
+     *
      * @Rest\Put("/edit/{id}", name="edit")
      *
      * @param Request       $request
@@ -103,6 +138,17 @@ class RequestController extends Controller
     }
 
     /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Deletes a request.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=RequestEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Requests")
+     *
      * @Rest\Delete("/delete/{id}", name="delete")
      *
      * @param integer $id

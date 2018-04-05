@@ -11,6 +11,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
+use Swagger\Annotations as SWG;
 
 /**
  * Request
@@ -27,6 +28,9 @@ class Request
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @SWG\Property(type="integer", description="The unique identifier of the request.")
+     *
      */
     private $id;
 
@@ -34,6 +38,9 @@ class Request
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     *
+     * @SWG\Property(type="string", description="The title of the request.")
+     *
      */
     private $title;
 
@@ -41,6 +48,8 @@ class Request
      * @var string
      *
      * @ORM\Column(name="text", type="text", length=255)
+     *
+     * @SWG\Property(type="string", description="The text of the request.")
      */
     private $text;
 
@@ -48,6 +57,8 @@ class Request
      * @var int
      *
      * @ORM\Column(name="angle", type="integer", nullable=true)
+     *
+     * @SWG\Property(type="integer", description="The angle of the request.")
      */
     private $angle;
 
@@ -55,6 +66,9 @@ class Request
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="requests")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="set null")
+     *
+     * @SWG\Property(type="User", description="The user linked to the request.")
      *
      * @Exclude
      */

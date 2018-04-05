@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 
 /**
  * Class UserController
@@ -35,6 +37,17 @@ class UserController extends Controller
     }
 
     /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the list of all users.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=User::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Users")
+     *
      * @return \AppBundle\Entity\User[]|array
      */
     public function getUsersAction()
