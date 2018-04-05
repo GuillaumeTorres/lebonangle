@@ -62,6 +62,13 @@ class User extends BaseUser implements \JsonSerializable
     private $lastName;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="phone_number", type="integer", nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="type", columnDefinition="ENUM('BUYER','SELLER')", type="string", length=255)
@@ -106,13 +113,14 @@ class User extends BaseUser implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id'         => $this->getId(),
-            'username'   => $this->getUsername(),
-            'first_name' => $this->getFirstName(),
-            'last_name'  => $this->getLastName(),
-            'type'       => $this->getType(),
-            'email'      => $this->getEmail(),
-            'roles'      => $this->getRoles(),
+            'id'           => $this->getId(),
+            'username'     => $this->getUsername(),
+            'first_name'   => $this->getFirstName(),
+            'last_name'    => $this->getLastName(),
+            'type'         => $this->getType(),
+            'email'        => $this->getEmail(),
+            'phone_number' => $this->getPhoneNumber(),
+            'roles'        => $this->getRoles(),
         ];
     }
 
@@ -247,6 +255,22 @@ class User extends BaseUser implements \JsonSerializable
     public function removeRequest(Request $requests)
     {
         $this->requests->removeElement($requests);
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhoneNumber(): int
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @param int $phoneNumber
+     */
+    public function setPhoneNumber(int $phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
     }
 }
 
