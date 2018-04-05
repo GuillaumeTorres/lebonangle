@@ -42,6 +42,34 @@ class FurnitureController extends Controller
     /**
      * @SWG\Response(
      *     response=200,
+     *     description="Returns the list of all the furnitures for the user connected.",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @Model(type=FurnitureEntity::class)
+     *      )
+     * )
+     *
+     * @SWG\Tag(name="Furnitures")
+     *
+     * @Rest\Get("/user", name="user")
+     *
+     * @return FurnitureEntity[]|array|JsonResponse
+     */
+    public function getByUserAction()
+    {
+        $userId = $this->getUser()->getId();
+        try {
+            $furnitures = $this->furnitureService->getByUser($userId);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 401);
+        }
+
+        return $furnitures;
+    }
+
+    /**
+     * @SWG\Response(
+     *     response=200,
      *     description="Returns the list of all the furnitures.",
      *     @SWG\Schema(
      *          type="array",
@@ -51,7 +79,7 @@ class FurnitureController extends Controller
      *
      * @SWG\Tag(name="Furnitures")
      *
-     * @Rest\Post(name="all")
+     * @Rest\Get(name="all")
      *
      * @return FurnitureEntity[]|array|JsonResponse
      */
@@ -86,14 +114,14 @@ class FurnitureController extends Controller
      */
     public function createAction(Request $request)
     {
-        $requestParameters = $request->request->all();
+        $furnitureParameters = $request->request->all();
 
         try {
             $furnitureEntity = new FurnitureEntity();
             $furnitureEntity->setUser($this->getUser());
 
-            if($this->submit($furnitureEntity, $requestParameters)) {
-                $this->furnitureService->insertRequest($furnitureEntity);
+            if($this->submit($furnitureEntity, $furnitureParameters)) {
+                $this->furnitureService->insertFurniture($furnitureEntity);
             }
         } catch (\Exception $e){
             return new JsonResponse(['error' => $e->getMessage()], 401);
@@ -148,7 +176,7 @@ class FurnitureController extends Controller
      *
      * @SWG\Tag(name="Furnitures")
      *
-     * @Rest\Get("/furniture/{id}", name="furniture")
+     * @Rest\Get("/{id}", name="furniture")
      *
      * @return FurnitureEntity[]|array|JsonResponse
      */

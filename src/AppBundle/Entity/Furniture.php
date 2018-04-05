@@ -83,6 +83,15 @@ class Furniture
     private $depth;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="adress", type="string", length=255, nullable=true)
+     *
+     * @SWG\Property(type="string", description="The Adress where the furniture is located.")
+     */
+    private $adress;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="angle", type="integer", nullable=true)
@@ -224,6 +233,28 @@ class Furniture
     }
 
     /**
+     * Get adress
+     *
+     * @return string
+     */
+    public function getAdress()
+    {
+        return $this->adress;
+    }
+
+    /**
+     * Set adress
+     *
+     * @param float $adress
+     *
+     * @return string
+     */
+    public function setAdress($adress)
+    {
+        $this->adress = $adress;
+    }
+
+    /**
      * Get depth
      *
      * @return float
@@ -285,6 +316,7 @@ class Furniture
             'width'       => $this->getWidth(),
             'height'      => $this->getHeight(),
             'depth'       => $this->getDepth(),
+            'adress'      => $this->getAdress(),
             'angle'       => $this->getAngle(),
             'user'        => $this->getUser(),
         ];

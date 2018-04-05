@@ -29,7 +29,7 @@ class FurnitureService
     private $entityManager;
 
     /**
-     * UserService constructor.
+     * FurnitureService constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
@@ -39,7 +39,20 @@ class FurnitureService
     }
 
     /**
-     * @return \AppBundle\Entity\Furniture[]|array
+     * @param integer $userId
+     *
+     * @return Furniture[]|array
+     */
+    public function getByUser($userId)
+    {
+        return $this
+            ->entityManager
+            ->getRepository('AppBundle:Furniture')
+            ->findBy(['user' => $userId]);
+    }
+
+    /**
+     * @return Furniture[]|array
      */
     public function getFurnitures()
     {
@@ -63,11 +76,11 @@ class FurnitureService
     }
 
     /**
-     * @param Request $request
+     * @param Furniture $furniture
      */
-    public function insertRequest($request)
+    public function insertFurniture($furniture)
     {
-        $this->entityManager->persist($request);
+        $this->entityManager->persist($furniture);
         $this->entityManager->flush();
     }
 
